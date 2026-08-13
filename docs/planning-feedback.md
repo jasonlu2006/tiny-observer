@@ -50,7 +50,7 @@ The first release candidate is not “a timer with a camera.” It is the vertic
 
 ## Open questions to resolve before production
 
-- Confirm the named iOS baseline device and minimum OS version before Phase 0; do not broaden support until capture/render budgets pass.
+- Minimum supported OS is now **iOS 17.0 or later**. Confirm the named iPhone baseline before Phase 0; do not broaden device support until capture/render budgets pass.
 - What exactly counts as a meaningful session for rewards, and how are long, abandoned, and resumed sessions handled?
 - How should account recovery, second-device sign-in, and queued offline mutations behave when a user changes devices?
 - What is the minimum acceptable battery/storage cost for a camera session and a recap render?
@@ -73,6 +73,7 @@ The first release candidate is not “a timer with a camera.” It is the vertic
 
 - Prototype session state machine and interruption recovery.
 - Build a one-relic real iOS camera compositor spike using AVFoundation, not only sample media.
+- Use iOS 17.0 or later as the minimum supported OS and document one named baseline iPhone for Phase 0 testing.
 - Build a deterministic local 9:16 recap renderer with a 10-minute recording target of 30 seconds or less on the named baseline device.
 - Define versioned content schemas for projects, stages, rewards, and inventory.
 - Instrument the activation funnel without sending freeform task text.
