@@ -50,11 +50,11 @@ The first release candidate is not “a timer with a camera.” It is the vertic
 
 ## Open questions to resolve before production
 
-- Minimum supported OS is now **iOS 17.0 or later**. Confirm the named iPhone baseline before Phase 0; do not broaden device support until capture/render budgets pass.
+- Minimum supported OS is now **iOS 17.0 or later**. The **Phase 0 performance baseline is iPhone 13 (128 GB)**. The intended initial launch floor is **iPhone 12 and newer**; test iPhone 11 later before considering broader support. Do not broaden device support until capture/render budgets pass.
 - What exactly counts as a meaningful session for rewards, and how are long, abandoned, and resumed sessions handled?
 - How should account recovery, second-device sign-in, and queued offline mutations behave when a user changes devices?
 - What is the minimum acceptable battery/storage cost for a camera session and a recap render?
-- What is the initial recording contract: portrait format, output size, recap duration, capture sampling, render-time budget, and supported iPhone baseline?
+- The initial recording contract is portrait 9:16, target 1080 × 1920, 5–20 second recap, interval-based local sampling, and a 10-minute recording render target of 30 seconds or less on the iPhone 13 baseline. Measure the same contract on iPhone 12 before launch-floor approval.
 - For the MVP, keep Gallery records and media device-local. Sync progression and session summaries; design Gallery sync/cloud backup as a later feature rather than showing unavailable Gallery entries on other devices.
 - Define the sampling strategy: interval-based frames by default, with temporary source retention only when needed for retry/export or user retention settings.
 - Set release budgets for battery, thermal state, storage, render time, and render failure rate for 10-, 25-, and 90-minute recordings.
@@ -73,8 +73,8 @@ The first release candidate is not “a timer with a camera.” It is the vertic
 
 - Prototype session state machine and interruption recovery.
 - Build a one-relic real iOS camera compositor spike using AVFoundation, not only sample media.
-- Use iOS 17.0 or later as the minimum supported OS and document one named baseline iPhone for Phase 0 testing.
-- Build a deterministic local 9:16 recap renderer with a 10-minute recording target of 30 seconds or less on the named baseline device.
+- Use iOS 17.0 or later as the minimum supported OS; use iPhone 13 (128 GB) as the Phase 0 performance baseline, iPhone 12 and newer as the initial launch floor, and iPhone 11 as a later compatibility test.
+- Build a deterministic local 9:16 recap renderer with a 10-minute recording target of 30 seconds or less on the iPhone 13 (128 GB) baseline, then verify the same budget on iPhone 12.
 - Define versioned content schemas for projects, stages, rewards, and inventory.
 - Instrument the activation funnel without sending freeform task text.
 - Test recording-first onboarding and the no-camera fallback as separate cohorts.
