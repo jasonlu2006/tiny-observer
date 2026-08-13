@@ -24,9 +24,9 @@ Camera composition is the most distinctive demo, but it adds permission, storage
 
 The proposed stack is reasonable, but the implementation phases should explicitly prioritize the highest-uncertainty proofs: timer correctness under interruption, local media capture/rendering, companion animation performance, and reward reconciliation after offline completion. Delay backend breadth and multi-platform polish until these work on one target device.
 
-### 4. Make progression measurable before adding economy layers
+### 4. Make the two reward lanes measurable
 
-Start with XP plus one simple project-progress value. Defer Souls, fragments, streak freezes, premium currency, and drop tables until the team can observe whether a completed session reliably leads to a meaningful next action. Multiple currencies will make early tuning harder to interpret.
+The main currency should be earned from active, unpaused focus minutes and remain available to every user, including no-camera users. Focus Sense can later award a separate, capped Focus Marks currency when the user opts into the model. Keep Focus Marks out of the first proof-of-value build until the model passes privacy, accuracy, battery, and thermal checks; it should never replace or reduce the main progression path.
 
 ### 5. Replace directional targets with decision thresholds
 
@@ -39,9 +39,9 @@ Viewing Relics, project stages, rewards, room items, and animation states should
 ## Recommended first build sequence
 
 1. Clickable prototype of the home room, focus setup, active session, and completion reward.
-2. One real timer with interruption/relaunch recovery and local session persistence.
+2. Required account sign-in followed by a real timer with interruption/relaunch recovery, local persistence, and queued sync.
 3. One Rive companion state machine with idle, working, sleepy, and celebrate states.
-4. No-camera session completion with local progression.
+4. No-camera session completion with time-based currency from active minutes only.
 5. Camera preview clipped into one Viewing Relic.
 6. Local recap export on one mobile platform.
 7. Small cohort test with event instrumentation and explicit privacy messaging.
@@ -50,10 +50,18 @@ Viewing Relics, project stages, rewards, room items, and animation states should
 
 - Is the first launch iOS-first, Android-first, or simultaneous, and which device baseline is supported?
 - What exactly counts as a meaningful session for rewards, and how are long, abandoned, and resumed sessions handled?
-- Is a user account required at first launch, or can guest progress be merged later without confusing identity or reward rules?
+- How should account recovery, second-device sign-in, and queued offline mutations behave when a user changes devices?
 - What is the minimum acceptable battery/storage cost for a camera session and a recap render?
-- Which single product metric determines whether desktop work begins?
-- What legal, store-policy, and consent requirements apply to camera capture, face blur, analytics, and users under 18?
+- The desktop decision is a combined gate: iOS retention, Android validation, explicit desktop demand, and team capacity—not one magic metric.
+- What store-policy, privacy, and consent requirements apply to camera capture, face blur, analytics, and the chosen account providers?
+
+## Recommended services
+
+- **Supabase** for Auth, Postgres, Row Level Security, and server-side reward mutations. The relational model is a better fit for append-only reward ledgers, wallet balances, projects, inventory, and cross-device reconciliation than a document-first backend.
+- **SQLite on-device** for the offline session database and mutation queue. Supabase should be the online authority, not the offline database itself.
+- **PostHog** for privacy-filtered product analytics and feature flags; do not enable session replay or capture camera data, raw video, task text, or Focus Sense source frames.
+- **Sentry** for crash and error monitoring, with sensitive payloads filtered before upload.
+- **RevenueCat later**, only when paid purchases or subscriptions exist.
 
 ## Suggested near-term repository issues
 
