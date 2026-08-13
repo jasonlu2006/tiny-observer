@@ -8,7 +8,7 @@ Reviewed against the [Companion Focus App Project Hub](https://www.notion.so/3bb
 - The recording-first positioning is coherent across the loop, Viewing Relic, Timelapse Gallery, room progression, widgets, desktop presence, and shareable recaps.
 - The privacy stance is unusually clear for a camera-adjacent product: local-first media, optional Focus Sense, and full no-camera functionality.
 - The plans correctly defer social systems, Linux support, and aggressive monetization until individual retention is demonstrated.
-- The technical plan calls out difficult areas early: timer recovery, idempotent rewards, cross-device conflicts, media storage, widgets, and desktop packaging.
+- The technical plan calls out difficult areas early: timer recovery, idempotent rewards, real camera capture, local rendering, Gallery persistence, media storage, widgets, and desktop packaging.
 
 ## Highest-priority decisions
 
@@ -22,7 +22,7 @@ Camera composition is the product, but it adds permission, storage, battery, ren
 
 ### 3. Turn the architecture into a risk order
 
-The proposed stack is reasonable, but the implementation phases should explicitly prioritize the highest-uncertainty proofs: timer correctness under interruption, local media capture/rendering, companion animation performance, and reward reconciliation after offline completion. Delay backend breadth and multi-platform polish until these work on one target device.
+The proposed stack is reasonable, but the implementation phases should explicitly prioritize the highest-uncertainty proofs: timer correctness under interruption, real iOS camera capture, local frame sampling/rendering, Gallery persistence, companion animation performance, and reward reconciliation after offline completion. Delay backend breadth and multi-platform polish until these work on one named baseline device.
 
 ### 4. Make the two reward lanes measurable
 
@@ -46,14 +46,18 @@ Viewing Relics, project stages, rewards, room items, and animation states should
 6. No-camera fallback with time-based currency from active minutes only.
 7. Small cohort test with capture/render/Gallery instrumentation and explicit privacy messaging.
 
+The first release candidate is not “a timer with a camera.” It is the vertical slice: account → recording → Viewing Relic → recap render → Gallery → replay/export → progression.
+
 ## Open questions to resolve before production
 
-- Is the first launch iOS-first, Android-first, or simultaneous, and which device baseline is supported?
+- Confirm the named iOS baseline device and minimum OS version before Phase 0; do not broaden support until capture/render budgets pass.
 - What exactly counts as a meaningful session for rewards, and how are long, abandoned, and resumed sessions handled?
 - How should account recovery, second-device sign-in, and queued offline mutations behave when a user changes devices?
 - What is the minimum acceptable battery/storage cost for a camera session and a recap render?
 - What is the initial recording contract: portrait format, output size, recap duration, capture sampling, render-time budget, and supported iPhone baseline?
-- How should Gallery metadata sync across devices when the recap media itself remains local and cloud backup is disabled?
+- For the MVP, keep Gallery records and media device-local. Sync progression and session summaries; design Gallery sync/cloud backup as a later feature rather than showing unavailable Gallery entries on other devices.
+- Define the sampling strategy: interval-based frames by default, with temporary source retention only when needed for retry/export or user retention settings.
+- Set release budgets for battery, thermal state, storage, render time, and render failure rate for 10-, 25-, and 90-minute recordings.
 - The desktop decision is a combined gate: iOS retention, Android validation, explicit desktop demand, and team capacity—not one magic metric.
 - What store-policy, privacy, and consent requirements apply to camera capture, face blur, analytics, and the chosen account providers?
 
@@ -68,9 +72,10 @@ Viewing Relics, project stages, rewards, room items, and animation states should
 ## Suggested near-term repository issues
 
 - Prototype session state machine and interruption recovery.
-- Build a one-relic local compositor spike.
+- Build a one-relic real iOS camera compositor spike using AVFoundation, not only sample media.
+- Build a deterministic local 9:16 recap renderer with a 10-minute recording target of 30 seconds or less on the named baseline device.
 - Define versioned content schemas for projects, stages, rewards, and inventory.
 - Instrument the activation funnel without sending freeform task text.
 - Test recording-first onboarding and the no-camera fallback as separate cohorts.
-- Define the Timelapse Gallery data model and local-media lifecycle before implementing cloud backup.
+- Define the Timelapse Gallery data model, local-media lifecycle, playback states, deletion behavior, and export behavior before implementing cloud backup.
 - Write the privacy/data-retention contract before implementing cloud backup.
