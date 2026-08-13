@@ -4,8 +4,8 @@ Reviewed against the [Companion Focus App Project Hub](https://www.notion.so/3bb
 
 ## What is already strong
 
-- The product has a memorable wedge: a real focus session becomes part of the companion's world through the Viewing Relic.
-- The companion-first positioning is coherent across the loop, room progression, widgets, desktop presence, and shareable recaps.
+- The product has a memorable wedge: a real focus session becomes an in-world timelapse through the Viewing Relic, then accumulates in a personal Gallery.
+- The recording-first positioning is coherent across the loop, Viewing Relic, Timelapse Gallery, room progression, widgets, desktop presence, and shareable recaps.
 - The privacy stance is unusually clear for a camera-adjacent product: local-first media, optional Focus Sense, and full no-camera functionality.
 - The plans correctly defer social systems, Linux support, and aggressive monetization until individual retention is demonstrated.
 - The technical plan calls out difficult areas early: timer recovery, idempotent rewards, cross-device conflicts, media storage, widgets, and desktop packaging.
@@ -16,9 +16,9 @@ Reviewed against the [Companion Focus App Project Hub](https://www.notion.so/3bb
 
 The current plan still contains enough surface area for several products. Freeze the prototype around one companion, one room, one project chain, one Viewing Relic, one camera mode, and one reward path. The success criterion should be repeat behavior, not feature completeness.
 
-### 2. Separate the emotional loop from the camera loop
+### 2. Keep the recording loop primary and the no-camera path secondary
 
-Camera composition is the most distinctive demo, but it adds permission, storage, battery, rendering, and privacy risk. Validate two paths in parallel: no-camera focus and camera/timelapse focus. The product should remain delightful if a user never grants camera access.
+Camera composition is the product, but it adds permission, storage, battery, rendering, and privacy risk. Validate the camera/timelapse path first, with a no-camera fallback for privacy or permission denial. The fallback should preserve focus, quests, XP, and main currency without making the product drift into a generic focus timer.
 
 ### 3. Turn the architecture into a risk order
 
@@ -30,7 +30,7 @@ The main currency should be earned from active, unpaused focus minutes and remai
 
 ### 5. Replace directional targets with decision thresholds
 
-The GTM plan has useful targets, but each should specify what decision it unlocks. For example: if first-session completion is weak, test setup length and camera timing; if completion is strong but second-session return is weak, test the first unlock and project framing; if camera opt-in is weak but no-camera retention is healthy, keep camera optional rather than forcing it.
+The GTM plan has useful targets, but each should specify what decision it unlocks. For example: if recording start is weak, test permission messaging and setup length; if capture succeeds but render completion is weak, fix reliability before adding content; if Gallery saves are strong but second-recording return is weak, test the first unlock and quest framing; if camera opt-in is weak, revisit the recording experience rather than redefining the product around no-camera use.
 
 ### 6. Establish a single source of truth for content
 
@@ -38,13 +38,13 @@ Viewing Relics, project stages, rewards, room items, and animation states should
 
 ## Recommended first build sequence
 
-1. Clickable prototype of the home room, focus setup, active session, and completion reward.
-2. Required account sign-in followed by a real timer with interruption/relaunch recovery, local persistence, and queued sync.
+1. Clickable prototype of the recording setup, live Viewing Relic scene, session completion, Gallery card, and recap playback.
+2. Required account sign-in followed by real camera capture with interruption/relaunch recovery, local persistence, and queued sync.
 3. One Rive companion state machine with idle, working, sleepy, and celebrate states.
-4. No-camera session completion with time-based currency from active minutes only.
-5. Camera preview clipped into one Viewing Relic.
-6. Local recap export on one mobile platform.
-7. Small cohort test with event instrumentation and explicit privacy messaging.
+4. One polished Viewing Relic with live compositing and a deterministic 9:16 local render.
+5. Timelapse Gallery playback, metadata, local deletion, favorite/pin, and explicit export/share.
+6. No-camera fallback with time-based currency from active minutes only.
+7. Small cohort test with capture/render/Gallery instrumentation and explicit privacy messaging.
 
 ## Open questions to resolve before production
 
@@ -52,6 +52,8 @@ Viewing Relics, project stages, rewards, room items, and animation states should
 - What exactly counts as a meaningful session for rewards, and how are long, abandoned, and resumed sessions handled?
 - How should account recovery, second-device sign-in, and queued offline mutations behave when a user changes devices?
 - What is the minimum acceptable battery/storage cost for a camera session and a recap render?
+- What is the initial recording contract: portrait format, output size, recap duration, capture sampling, render-time budget, and supported iPhone baseline?
+- How should Gallery metadata sync across devices when the recap media itself remains local and cloud backup is disabled?
 - The desktop decision is a combined gate: iOS retention, Android validation, explicit desktop demand, and team capacity—not one magic metric.
 - What store-policy, privacy, and consent requirements apply to camera capture, face blur, analytics, and the chosen account providers?
 
@@ -69,5 +71,6 @@ Viewing Relics, project stages, rewards, room items, and animation states should
 - Build a one-relic local compositor spike.
 - Define versioned content schemas for projects, stages, rewards, and inventory.
 - Instrument the activation funnel without sending freeform task text.
-- Test no-camera and camera onboarding as separate cohorts.
+- Test recording-first onboarding and the no-camera fallback as separate cohorts.
+- Define the Timelapse Gallery data model and local-media lifecycle before implementing cloud backup.
 - Write the privacy/data-retention contract before implementing cloud backup.
